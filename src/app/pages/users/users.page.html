@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="signOut()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>All Users</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadUsers($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="users.length == 0">
+    <ion-item *ngFor="let i of [1,2,3,4]">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let user of users" tappable (click)="user.expanded = !user.expanded">
+      <ion-avatar slot="start">
+        <img [src]="user.avatar">
+      </ion-avatar>
+      <ion-chip slot="end" color="primary">{{ user.createdAt | date:'shortDate'}}</ion-chip>
+
+      <ion-label class="ion-text-wrap">
+        {{ user.first_name }} {{ user.last_name }}
+        <p>{{ user.email }}</p>
+        <ion-text *ngIf="user.expanded" color="secondary">
+          {{ user.bio }}
+        </ion-text>
+      </ion-label>
+
+    </ion-item>
+  </ion-list>
+</ion-content>
